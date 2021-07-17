@@ -12,7 +12,7 @@ This project has dependency on third party library  Alamofire used to set images
 
 
 ## Getting Started
-Clone this repo to your hard drive using 'git clone https://github.com/usmaanirfan/TheMovies.git'. Open 'MoviesApp.xcodeproj' in Xcode. It will automatically start  downloading third party dependencies . Once dependencies are downloaded. You are good to run this project in Xcode.
+Clone this repo to your hard drive using 'git clone https://github.com/AhtashamAnsari0/MovieApp.git'. Open 'MovieApp.xcodeproj' in Xcode. It will automatically start  downloading third party dependencies . Once dependencies are downloaded. You are good to run this project in Xcode.
 
 
 ## Tools used
