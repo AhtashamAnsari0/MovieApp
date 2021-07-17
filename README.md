@@ -1,4 +1,4 @@
-# iOS  Assignment - TheMovies 
+# iOS  Assignment - MovieApp 
 ## An iOS app to show movies poster and detail  in Swift using Xcode 12.5
 
 ## Description
