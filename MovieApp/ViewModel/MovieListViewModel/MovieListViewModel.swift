@@ -25,11 +25,28 @@ class MovieListViewModel {
     /**String type array   used to store  movie related option */
     var separateOptionValue: [String]?
     
+    var navigationTitle: String {
+        return "Movies"
+    }
+    
     /**Custom  Mathod used to fetch  movie list  from json */
     func fetchMovieList() {
         if let list =  JsonParser.sharedInstance.getMovieList() {
             movieList = list
         }
+    }
+    
+    /**Custom  Mathod used to get  movie list count*/
+    func getMovieListCount()->Int? {
+        movieList?.count ?? 0
+    }
+    
+    /**Custom  Mathod used to get  movie List */
+    func getMovieList()->[MovieList]? {
+        if let list =  JsonParser.sharedInstance.getMovieList() {
+           return  list
+        }
+        return []
     }
     
     /**Custom  Mathod used to get  movie option */
@@ -69,14 +86,28 @@ class MovieListViewModel {
             separateOptionValue = movieList?.compactMap {$0.year}.removingDuplicates()
         case "Genre":
             separateOptionValue = movieList?.compactMap {$0.genre}.removingDuplicates()
+            separateOptionValue = seprateDataWithComma(separateOptionList: separateOptionValue).flatMap {$0}.removingDuplicates()
         case "Directors":
             separateOptionValue = movieList?.compactMap {$0.director}.removingDuplicates()
+            separateOptionValue = seprateDataWithComma(separateOptionList: separateOptionValue).flatMap {$0}.removingDuplicates()
         case "Actors":
             separateOptionValue = movieList?.compactMap {$0.actors}.removingDuplicates()
+            separateOptionValue = seprateDataWithComma(separateOptionList: separateOptionValue).flatMap {$0}.removingDuplicates()
         default:
            print("")
         }
         reloadOptionsTableViewClosure?()
+    }
+    
+    /** Private func used to seperatethe  value  */
+    private func seprateDataWithComma(separateOptionList:[String]?)->[[String]] {
+        var movieOption = [[String]]()
+        for optionValue in separateOptionList ?? [] {
+            let optionValue  = optionValue
+            let seprateList = optionValue.components(separatedBy: ",")
+            movieOption.append(seprateList)
+        }
+        return movieOption
     }
     
     /**Custom  Mathod used to get  movie list count*/
@@ -117,5 +148,4 @@ class MovieListViewModel {
     private func searchMovieWithOption(option:String) {
         searchMovieList = movieList?.filter {$0.title?.range(of: option, options: .caseInsensitive) != nil || $0.genre?.range(of: option, options: .caseInsensitive) != nil || $0.actors?.range(of: option, options: .caseInsensitive) != nil || $0.director?.range(of: option, options: .caseInsensitive) != nil}
     }
-    
 }

@@ -16,7 +16,7 @@ extension UIImageView {
 }
 
 //MARK:- NSObject extension used to return Self Instance Extension
-extension NSObject{
+extension NSObject {
     var ClassName:String {
         return String(describing: type(of: self))
     }

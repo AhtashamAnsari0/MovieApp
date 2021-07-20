@@ -23,6 +23,10 @@ struct MovieDetailsViewModel {
         reloadDetailsViewClosure?()
     }
     
+    var navigationTitle: String {
+        return "Movies Details"
+    }
+    
     /**Custom Mathod used to get movie details count */
     func movieDetailsCount()-> Int {
         movieDetailsData?.count ?? 0
@@ -41,6 +45,59 @@ struct MovieDetailsViewModel {
     func getRatingValue(from movie: MovieList?, at index: Int)-> Ratings? {
         movie?.ratings?[index]
     }
+    
+    /**Custom Mathod used to get average IMDB rating */
+    func IMDBAverageValue(with rating: String?)-> Float {
+        let ratingValue = (Float(rating ?? "0.0") ?? 0.0) / 10
+        return ratingValue
+    }
+    
+    /** Custom Mathod used to get average rating value */
+    func getRatingAverageValue(with rating:Ratings?)->Float {
+        var ratingValue:Float = 0.0
+        switch rating?.source {
+        case "Internet Movie Database":
+            ratingValue = internetMovieDatabaseAverageValue(with: rating?.value)
+        case "Rotten Tomatoes":
+            ratingValue = rottenTomatoesAverageValue(with: rating?.value)
+        case "Metacritic":
+            ratingValue = metacriticAverageValue(with: rating?.value)
+        default:
+            print("default")
+        }
+        return ratingValue
+    }
+    
+    /** Custom Mathod used to get IMDB average rating value */
+    func internetMovieDatabaseAverageValue(with rating: String?)-> Float {
+        let splitString = rating?.components(separatedBy: "/")
+        var ratingValue = "0.0"
+        if splitString?.count ?? 0 > 0 {
+            ratingValue = splitString?[0] ?? "0.0"
+        }
+        let rating = (Float(ratingValue) ?? 0.0) / 10
+        return rating
+    }
+    
+    /** Custom Mathod used to get RottenTomatoes average rating value */
+    func rottenTomatoesAverageValue(with rating: String?)-> Float {
+        let ratingValue = String(rating?.dropLast() ?? "00")
+        let rating = (Float(ratingValue) ?? 00) / 100
+        return rating
+    }
+    
+    /** Custom Mathod used to get Metacritic average rating value */
+     func metacriticAverageValue(with rating: String?)-> Float {
+        let splitString = rating?.components(separatedBy: "/")
+        var ratingValue = "00"
+        
+        if splitString?.count ?? 0 > 0 {
+            ratingValue = splitString?[0] ?? "00"
+        }
+        let rating = (Float(ratingValue) ?? 00) / 100
+        return rating
+    }
+    
 }
 /**Model  used  for movie details  */
 struct MovieDetailModel {

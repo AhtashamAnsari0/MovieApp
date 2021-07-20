@@ -24,6 +24,8 @@ class MovieDetailsViewController: UIViewController {
     @IBOutlet weak var pickerView: UIPickerView!
     /**UIPickerView Used to  select movie rating*/
     @IBOutlet weak var ratingButton: UIButton!
+    /**UIProgressView Used to  show movie rating*/
+    @IBOutlet weak var ratingProgressView: ProgressView!
     
     /**MovieList object  Used to  display movie details*/
     var movieDetails:MovieList?
@@ -41,11 +43,12 @@ class MovieDetailsViewController: UIViewController {
         // Do any additional setup after loading the view.
         initialSetup()
         setMovieDetails()
+        //ratingProgressView.progress = 0.86
     }
     
     //MARK: - Private Mathod Used for initial setup
     private func initialSetup() {
-        self.title = movieDetails?.title ?? ""
+        self.title = viewModel.navigationTitle 
         tableView.tableHeaderView = posterView
         tableView.tableFooterView = ratingView
         tableView.register(UINib(nibName: String (describing: MovieDetailsTableViewCell.self), bundle: Bundle.main), forCellReuseIdentifier: Constants.CellIdentifiers.movieDetailsCell)
@@ -55,6 +58,7 @@ class MovieDetailsViewController: UIViewController {
         pickerView.isHidden = true
         pickerView.layer.borderWidth = 1.0
         pickerView.layer.borderColor = UIColor.gray.cgColor
+        ratingProgressView.progressTintColor = Constants.ColorPalette.lightYellowColor
         viewModel.reloadDetailsViewClosure = {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -65,7 +69,10 @@ class MovieDetailsViewController: UIViewController {
     
     //MARK: - private Mathod Used set poster image
     private func setMovieDetails() {
-        ratingTitleLabel.text = "IMDB: \(movieDetails?.imdbRating ?? "")/10"
+        let avgRating = viewModel.IMDBAverageValue(with: movieDetails?.imdbRating)
+        ratingProgressView.progress = avgRating
+        //ratingTitleLabel.text = "IMDB: \(movieDetails?.imdbRating ?? "")/10"
+        ratingTitleLabel.text = "IMDB:"
         if let movie = movieDetails, let imageUrl = URL(string: movie.poster ?? "") {
             self.posterImageView.setImage(url: imageUrl)
         }
@@ -73,7 +80,10 @@ class MovieDetailsViewController: UIViewController {
     
     //MARK: - Custom Mathod Used set rating
     func setRatingData(with rating: Ratings?) {
-        ratingTitleLabel.text = "\(rating?.source ?? ""): \(rating?.value ?? "")"
+        //ratingTitleLabel.text = "\(rating?.source ?? ""): \(rating?.value ?? "")"
+        ratingTitleLabel.text = "\(rating?.source ?? ""):"
+        let avgRating = viewModel.getRatingAverageValue(with: rating)
+        ratingProgressView.progress = avgRating
         pickerView.isHidden = true
     }
     

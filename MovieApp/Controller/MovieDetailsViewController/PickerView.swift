@@ -23,10 +23,6 @@ extension MovieDetailsViewController: UIPickerViewDataSource,UIPickerViewDelegat
         viewModel.getRatingCount(from: movieDetails)
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        "test"
-    }
-    
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         let rating = viewModel.getRatingValue(from: movieDetails, at: row)
         let label = (view as? UILabel) ?? UILabel()

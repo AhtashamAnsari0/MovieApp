@@ -15,7 +15,7 @@ class CommonRedirection {
         return UIStoryboard(name: "Main", bundle: nil)
     }
     
-    func getOptionsListViewController() -> OptionsListViewController? {
+     func getOptionsListViewController() -> OptionsListViewController? {
         return storyBoard().instantiateViewController(withIdentifier: OptionsListViewController().ClassName) as? OptionsListViewController
     }
     

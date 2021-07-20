@@ -32,7 +32,7 @@ class MovieListViewController: UIViewController {
 
     //MARK: - Private Mathod Used for initial setup
     private func initialSetup() {
-        self.title = "Movies"
+        self.title = viewModel.navigationTitle
         tableView.dataSource = self
         tableView.delegate = self
         searchBar.delegate = self
